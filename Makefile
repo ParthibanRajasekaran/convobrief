@@ -1,16 +1,19 @@
-.PHONY: setup lint typecheck test check run bench clean docker help
+.PHONY: setup lint typecheck test check run clean docker help
 
 help:
 	@echo "Available commands:"
-	@echo "  make setup      - Install dependencies"
-	@echo "  make lint       - Run ruff and black"
-	@echo "  make typecheck  - Run mypy"
-	@echo "  make test       - Run pytest"
-	@echo "  make check      - Run all checks (lint + typecheck + test)"
-	@echo "  make run        - Run development server"
-	@echo "  make bench      - Run benchmarks"
-	@echo "  make clean      - Remove generated files"
-	@echo "  make docker     - Build Docker image"
+	@echo "  make setup       - Install dependencies"
+	@echo "  make lint        - Run ruff and black"
+	@echo "  make lint-fix    - Auto-fix linting issues"
+	@echo "  make typecheck   - Run mypy"
+	@echo "  make test        - Run all tests"
+	@echo "  make test-unit   - Run unit tests only"
+	@echo "  make test-cov    - Run tests with coverage report"
+	@echo "  make check       - Run all checks (lint + typecheck + test)"
+	@echo "  make run         - Run development server"
+	@echo "  make clean       - Remove generated files"
+	@echo "  make docker      - Build Docker image"
+	@echo "  make docker-run  - Run Docker container"
 
 setup:
 	poetry install
@@ -42,9 +45,6 @@ check: lint typecheck test
 
 run:
 	poetry run uvicorn insightsvc.api.app:create_app --factory --reload --host 0.0.0.0 --port 8000
-
-bench:
-	poetry run python scripts/benchmark.py
 
 clean:
 	find . -type d -name __pycache__ -exec rm -rf {} +
