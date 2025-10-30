@@ -1,0 +1,47 @@
+{
+  "filename": "sample_2speakers_noisy.wav",
+  "duration_sec": 11.0,
+  "sample_rate": 16000,
+  "num_speakers": 2,
+  "speakers": [
+    {
+      "id": "S1",
+      "gender": "male",
+      "base_freq": 140.0
+    },
+    {
+      "id": "S2",
+      "gender": "female",
+      "base_freq": 200.0
+    }
+  ],
+  "utterances": [
+    {
+      "speaker": "S1",
+      "start": 0.0,
+      "end": 2.0,
+      "text": "Can you hear me?"
+    },
+    {
+      "speaker": "S2",
+      "start": 2.5,
+      "end": 4.5,
+      "text": "Yes, barely with all this noise."
+    },
+    {
+      "speaker": "S1",
+      "start": 5.0,
+      "end": 7.5,
+      "text": "Let's continue anyway."
+    },
+    {
+      "speaker": "S2",
+      "start": 8.0,
+      "end": 10.0,
+      "text": "Okay, sounds good."
+    }
+  ],
+  "has_overlap": false,
+  "has_sarcasm": false,
+  "noise_level": "high"
+}

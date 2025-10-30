@@ -1,0 +1,101 @@
+{
+  "filename": "sample_2speakers_sarcasm.wav",
+  "duration_sec": 24.0,
+  "sample_rate": 16000,
+  "num_speakers": 2,
+  "speakers": [
+    {
+      "id": "S1",
+      "gender": "male",
+      "base_freq": 130.0
+    },
+    {
+      "id": "S2",
+      "gender": "female",
+      "base_freq": 210.0
+    }
+  ],
+  "utterances": [
+    {
+      "speaker": "S1",
+      "start": 0.0,
+      "end": 2.5,
+      "text": "The project deadline is tomorrow.",
+      "is_sarcastic": false
+    },
+    {
+      "speaker": "S2",
+      "start": 3.0,
+      "end": 5.5,
+      "text": "Oh wonderful, plenty of time.",
+      "is_sarcastic": true
+    },
+    {
+      "speaker": "S1",
+      "start": 6.0,
+      "end": 8.5,
+      "text": "We're way behind schedule.",
+      "is_sarcastic": false
+    },
+    {
+      "speaker": "S2",
+      "start": 9.0,
+      "end": 11.5,
+      "text": "Yeah, this is going great.",
+      "is_sarcastic": true
+    },
+    {
+      "speaker": "S1",
+      "start": 12.0,
+      "end": 14.5,
+      "text": "Can you finish your part today?",
+      "is_sarcastic": false
+    },
+    {
+      "speaker": "S2",
+      "start": 15.0,
+      "end": 17.5,
+      "text": "Sure, I'll just work all night.",
+      "is_sarcastic": true
+    },
+    {
+      "speaker": "S1",
+      "start": 18.0,
+      "end": 20.0,
+      "text": "I know it's difficult.",
+      "is_sarcastic": false
+    },
+    {
+      "speaker": "S2",
+      "start": 20.5,
+      "end": 23.0,
+      "text": "Okay, I'll do my best.",
+      "is_sarcastic": false
+    }
+  ],
+  "has_overlap": false,
+  "has_sarcasm": true,
+  "sarcastic_utterances": [
+    {
+      "speaker": "S2",
+      "start": 3.0,
+      "end": 5.5,
+      "text": "Oh wonderful, plenty of time.",
+      "is_sarcastic": true
+    },
+    {
+      "speaker": "S2",
+      "start": 9.0,
+      "end": 11.5,
+      "text": "Yeah, this is going great.",
+      "is_sarcastic": true
+    },
+    {
+      "speaker": "S2",
+      "start": 15.0,
+      "end": 17.5,
+      "text": "Sure, I'll just work all night.",
+      "is_sarcastic": true
+    }
+  ]
+}

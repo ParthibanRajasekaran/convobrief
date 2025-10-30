@@ -1,0 +1,59 @@
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Documentation (not needed in image)
+*.md
+!README.md
+
+# Tests (not needed in production image)
+tests/
+.pytest_cache/
+
+# Development files
+Makefile
+docker-compose.yml
+.env.example
+scripts/benchmark.py
+scripts/demo.py
+
+# Logs and artifacts
+logs/
+artifacts/
+*.log
+
+# Audio files
+*.wav
+*.mp3
+*.m4a
+
+# OS
+.DS_Store
+Thumbs.db

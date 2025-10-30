@@ -1,0 +1,97 @@
+{
+  "filename": "sample_3speakers_overlap.wav",
+  "duration_sec": 26.0,
+  "sample_rate": 16000,
+  "num_speakers": 3,
+  "speakers": [
+    {
+      "id": "S1",
+      "gender": "male",
+      "base_freq": 110.0
+    },
+    {
+      "id": "S2",
+      "gender": "male",
+      "base_freq": 150.0
+    },
+    {
+      "id": "S3",
+      "gender": "female",
+      "base_freq": 230.0
+    }
+  ],
+  "utterances": [
+    {
+      "speaker": "S1",
+      "start": 0.0,
+      "end": 3.0,
+      "text": "Let's review the quarterly results."
+    },
+    {
+      "speaker": "S2",
+      "start": 3.5,
+      "end": 6.0,
+      "text": "The numbers look promising."
+    },
+    {
+      "speaker": "S3",
+      "start": 6.5,
+      "end": 9.0,
+      "text": "I agree, revenue is up fifteen percent."
+    },
+    {
+      "speaker": "S1",
+      "start": 9.5,
+      "end": 12.0,
+      "text": "But we need to address the cost increase."
+    },
+    {
+      "speaker": "S2",
+      "start": 12.5,
+      "end": 15.0,
+      "text": "The marketing spend was necessary."
+    },
+    {
+      "speaker": "S3",
+      "start": 13.0,
+      "end": 15.5,
+      "text": "I think we should increase it even more."
+    },
+    {
+      "speaker": "S1",
+      "start": 16.0,
+      "end": 18.5,
+      "text": "Let's schedule a follow-up meeting."
+    },
+    {
+      "speaker": "S2",
+      "start": 19.0,
+      "end": 21.0,
+      "text": "I can prepare a detailed report."
+    },
+    {
+      "speaker": "S3",
+      "start": 20.0,
+      "end": 22.5,
+      "text": "And I'll analyze the market trends."
+    },
+    {
+      "speaker": "S1",
+      "start": 23.0,
+      "end": 25.0,
+      "text": "Perfect, thank you both."
+    }
+  ],
+  "has_overlap": true,
+  "overlap_regions": [
+    [
+      12.5,
+      15.5
+    ],
+    [
+      19.0,
+      22.5
+    ]
+  ],
+  "has_sarcasm": false
+}

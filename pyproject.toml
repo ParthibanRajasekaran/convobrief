@@ -1,0 +1,116 @@
+[tool.poetry]
+name = "insightsvc"
+version = "0.1.0"
+description = "Production-ready AI conversation insights service with diarization, ASR, and mood analysis"
+authors = ["Senior Staff Engineer <engineer@example.com>"]
+readme = "README.md"
+packages = [{include = "insightsvc", from = "src"}]
+
+[tool.poetry.dependencies]
+python = ">=3.11,<3.14"
+fastapi = "^0.104.1"
+uvicorn = {extras = ["standard"], version = "^0.24.0"}
+pydantic = "^2.5.0"
+pydantic-settings = "^2.1.0"
+torch = "^2.1.0"
+torchaudio = "^2.1.0"
+transformers = "^4.35.0"
+accelerate = "^0.25.0"
+datasets = "^2.15.0"
+librosa = "^0.10.1"
+soundfile = "^0.12.1"
+pydub = "^0.25.1"
+pyannote-audio = "^3.1.0"
+speechbrain = "^0.5.16"
+intervaltree = "^3.1.0"
+structlog = "^23.2.0"
+prometheus-client = "^0.19.0"
+python-multipart = "^0.0.6"
+aiofiles = "^23.2.1"
+uvloop = "^0.19.0"
+numpy = "^1.26.0"
+scipy = "^1.11.4"
+jiwer = "^3.0.3"
+boto3 = {version = "^1.29.0", optional = true}
+openai-whisper = "^20231117"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.3"
+pytest-asyncio = "^0.21.1"
+pytest-cov = "^4.1.0"
+mypy = "^1.7.0"
+ruff = "^0.1.6"
+black = "^23.11.0"
+httpx = "^0.25.2"
+types-aiofiles = "^23.2.0"
+
+[tool.poetry.extras]
+s3 = ["boto3"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 100
+target-version = ['py311', 'py312', 'py313']
+include = '\.pyi?$'
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "C",  # flake8-comprehensions
+    "B",  # flake8-bugbear
+    "UP", # pyupgrade
+]
+ignore = [
+    "E501",  # line too long (handled by black)
+    "B008",  # do not perform function calls in argument defaults
+    "C901",  # too complex
+]
+
+[tool.ruff.per-file-ignores]
+"__init__.py" = ["F401"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_any_generics = false
+disallow_subclassing_any = false
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+check_untyped_defs = true
+strict_equality = true
+plugins = ["pydantic.mypy"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --cov=src/insightsvc --cov-report=term-missing --cov-report=html"
+
+[tool.coverage.run]
+source = ["src"]
+omit = ["tests/*", "src/insightsvc/__init__.py"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if TYPE_CHECKING:",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+]

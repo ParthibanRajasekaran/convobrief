@@ -1,0 +1,70 @@
+{
+  "filename": "sample_2speakers_clean.wav",
+  "duration_sec": 23.0,
+  "sample_rate": 16000,
+  "num_speakers": 2,
+  "speakers": [
+    {
+      "id": "S1",
+      "gender": "male",
+      "base_freq": 120.0
+    },
+    {
+      "id": "S2",
+      "gender": "female",
+      "base_freq": 220.0
+    }
+  ],
+  "utterances": [
+    {
+      "speaker": "S1",
+      "start": 0.0,
+      "end": 2.5,
+      "text": "Hello everyone, let's start the meeting."
+    },
+    {
+      "speaker": "S2",
+      "start": 3.0,
+      "end": 5.0,
+      "text": "Good morning, I agree."
+    },
+    {
+      "speaker": "S1",
+      "start": 5.5,
+      "end": 8.5,
+      "text": "Today we need to discuss the project timeline."
+    },
+    {
+      "speaker": "S2",
+      "start": 9.0,
+      "end": 12.0,
+      "text": "Yes, and we should finalize the budget."
+    },
+    {
+      "speaker": "S1",
+      "start": 12.5,
+      "end": 15.0,
+      "text": "I'll take the action item for the timeline."
+    },
+    {
+      "speaker": "S2",
+      "start": 15.5,
+      "end": 18.0,
+      "text": "Great, I'll handle the budget analysis."
+    },
+    {
+      "speaker": "S1",
+      "start": 18.5,
+      "end": 20.0,
+      "text": "Any questions?"
+    },
+    {
+      "speaker": "S2",
+      "start": 20.5,
+      "end": 22.0,
+      "text": "No, that sounds good."
+    }
+  ],
+  "has_overlap": false,
+  "has_sarcasm": false
+}
