@@ -7,7 +7,6 @@ with the synthetic test data.
 import asyncio
 import json
 from pathlib import Path
-from uuid import uuid4
 
 # TODO: Uncomment when pipeline is implemented
 # from insightsvc.pipelines.analyze_meeting import MeetingAnalysisPipeline
@@ -33,8 +32,10 @@ async def test_sample(audio_path: Path, pipeline=None) -> dict:
     if metadata_path.exists():
         with open(metadata_path) as f:
             ground_truth = json.load(f)
-        print(f"Ground truth: {ground_truth['num_speakers']} speakers, "
-              f"{ground_truth['duration_sec']:.1f}s")
+        print(
+            f"Ground truth: {ground_truth['num_speakers']} speakers, "
+            f"{ground_truth['duration_sec']:.1f}s"
+        )
     else:
         ground_truth = None
         print("No ground truth metadata found")
@@ -139,11 +140,13 @@ async def test_all_samples(samples_dir: Path) -> None:
             results.append(result)
         except Exception as e:
             print(f"\n❌ Error testing {audio_path.name}: {e}")
-            results.append({
-                "audio_file": audio_path.name,
-                "status": "error",
-                "error": str(e),
-            })
+            results.append(
+                {
+                    "audio_file": audio_path.name,
+                    "status": "error",
+                    "error": str(e),
+                }
+            )
 
     # Summary
     print("\n" + "=" * 60)
@@ -154,9 +157,11 @@ async def test_all_samples(samples_dir: Path) -> None:
         status = result.get("status", "completed")
         if status == "completed":
             correct = "✅" if result.get("speaker_detection_correct") else "❌"
-            print(f"{correct} {result['audio_file']}: "
-                  f"{result['detected_speakers']} speakers, "
-                  f"RTF={result['rtf']:.2f}x")
+            print(
+                f"{correct} {result['audio_file']}: "
+                f"{result['detected_speakers']} speakers, "
+                f"RTF={result['rtf']:.2f}x"
+            )
         elif status == "skipped":
             print(f"⚠️  {result['audio_file']}: {result['reason']}")
         elif status == "error":
@@ -165,11 +170,15 @@ async def test_all_samples(samples_dir: Path) -> None:
     # Save results
     results_path = samples_dir / "test_results.json"
     with open(results_path, "w") as f:
-        json.dump({
-            "timestamp": "2025-10-30",
-            "total_samples": len(results),
-            "results": results,
-        }, f, indent=2)
+        json.dump(
+            {
+                "timestamp": "2025-10-30",
+                "total_samples": len(results),
+                "results": results,
+            },
+            f,
+            indent=2,
+        )
     print(f"\nResults saved to: {results_path}")
 
 
@@ -177,9 +186,7 @@ def main() -> None:
     """Main entry point."""
     import argparse
 
-    parser = argparse.ArgumentParser(
-        description="Test pipeline with generated audio samples"
-    )
+    parser = argparse.ArgumentParser(description="Test pipeline with generated audio samples")
     parser.add_argument(
         "--samples-dir",
         type=Path,

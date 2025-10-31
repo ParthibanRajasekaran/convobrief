@@ -5,13 +5,10 @@ for processing pipeline.
 """
 
 from pathlib import Path
-from typing import Tuple
 
 import librosa
 import numpy as np
 import soundfile as sf
-import torch
-import torchaudio
 from pydub import AudioSegment
 
 from insightsvc.api.app import AnalysisError
@@ -26,7 +23,7 @@ def load_audio(
     target_sr: int = 16000,
     mono: bool = True,
     normalize: bool = True,
-) -> Tuple[np.ndarray, int]:
+) -> tuple[np.ndarray, int]:
     """Load audio file from URI and preprocess.
 
     Args:
@@ -84,7 +81,7 @@ def load_audio(
             message=f"Failed to load audio: {str(e)}",
             hint="Ensure file exists and format is supported (wav, mp3, m4a, flac)",
             recoverable=False,
-        )
+        ) from e
 
 
 def _load_with_soundfile(
@@ -92,7 +89,7 @@ def _load_with_soundfile(
     target_sr: int,
     mono: bool,
     normalize: bool,
-) -> Tuple[np.ndarray, int]:
+) -> tuple[np.ndarray, int]:
     """Load audio using soundfile."""
     audio, sr = sf.read(str(path), dtype="float32")
 
@@ -117,7 +114,7 @@ def _load_with_pydub(
     target_sr: int,
     mono: bool,
     normalize: bool,
-) -> Tuple[np.ndarray, int]:
+) -> tuple[np.ndarray, int]:
     """Load audio using pydub (for mp3, m4a, etc.)."""
     # Load with pydub
     audio_segment = AudioSegment.from_file(str(path))
@@ -149,7 +146,7 @@ def _load_with_librosa(
     target_sr: int,
     mono: bool,
     normalize: bool,
-) -> Tuple[np.ndarray, int]:
+) -> tuple[np.ndarray, int]:
     """Load audio using librosa (fallback)."""
     audio, sr = librosa.load(str(path), sr=target_sr, mono=mono)
 

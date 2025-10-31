@@ -3,7 +3,6 @@
 Orchestrates the complete analysis workflow from audio input to final artifacts.
 """
 
-from pathlib import Path
 from typing import Any
 from uuid import UUID
 
@@ -13,7 +12,6 @@ from insightsvc.config import get_settings
 from insightsvc.logging import get_logger
 from insightsvc.models.base import DiarizationSegment
 from insightsvc.schemas import AnalyzeRequest, AnalyzeResponse
-from insightsvc.services.align import assign_speakers, group_into_utterances
 from insightsvc.services.audio_io import load_audio, validate_audio_duration
 
 logger = get_logger(__name__)

@@ -6,7 +6,6 @@ to test the pipeline without requiring real meeting recordings.
 
 import argparse
 import json
-import random
 from pathlib import Path
 from typing import Any
 
@@ -203,7 +202,6 @@ def save_audio(
         print("Warning: soundfile not installed. Install with: pip install soundfile")
         # Fallback to basic WAV writing
         import wave
-        import struct
 
         path.parent.mkdir(parents=True, exist_ok=True)
         with wave.open(str(path), "wb") as wav_file:
@@ -253,12 +251,14 @@ def generate_2speaker_clean(output_dir: Path) -> dict[str, Any]:
         audio = generate_speech_like_signal(duration, freq, sample_rate)
 
         segments.append((audio, start, end))
-        utterances.append({
-            "speaker": speaker,
-            "start": start,
-            "end": end,
-            "text": text,
-        })
+        utterances.append(
+            {
+                "speaker": speaker,
+                "start": start,
+                "end": end,
+                "text": text,
+            }
+        )
 
     # Mix and add slight background noise
     total_duration = 23.0
@@ -334,12 +334,14 @@ def generate_3speaker_overlap(output_dir: Path) -> dict[str, Any]:
         audio = generate_speech_like_signal(duration, freq, sample_rate)
 
         segments.append((audio, start, end))
-        utterances.append({
-            "speaker": speaker,
-            "start": start,
-            "end": end,
-            "text": text,
-        })
+        utterances.append(
+            {
+                "speaker": speaker,
+                "start": start,
+                "end": end,
+                "text": text,
+            }
+        )
 
     # Mix with overlaps
     total_duration = 26.0
@@ -417,13 +419,15 @@ def generate_sarcasm_scenario(output_dir: Path) -> dict[str, Any]:
             audio = generate_speech_like_signal(duration, freq, sample_rate)
 
         segments.append((audio, start, end))
-        utterances.append({
-            "speaker": speaker,
-            "start": start,
-            "end": end,
-            "text": text,
-            "is_sarcastic": is_sarcastic,
-        })
+        utterances.append(
+            {
+                "speaker": speaker,
+                "start": start,
+                "end": end,
+                "text": text,
+                "is_sarcastic": is_sarcastic,
+            }
+        )
 
     # Mix
     total_duration = 24.0
@@ -491,12 +495,14 @@ def generate_noisy_audio(output_dir: Path) -> dict[str, Any]:
         audio = generate_speech_like_signal(duration, freq, sample_rate)
 
         segments.append((audio, start, end))
-        utterances.append({
-            "speaker": speaker,
-            "start": start,
-            "end": end,
-            "text": text,
-        })
+        utterances.append(
+            {
+                "speaker": speaker,
+                "start": start,
+                "end": end,
+                "text": text,
+            }
+        )
 
     # Mix with HIGH background noise
     total_duration = 11.0
@@ -573,14 +579,14 @@ def generate_all_samples(output_dir: Path) -> None:
     print(f"Manifest: {manifest_path}")
     print("\nSample files:")
     for meta in metadata_list:
-        print(f"  - {meta['filename']} ({meta['duration_sec']:.1f}s, {meta['num_speakers']} speakers)")
+        print(
+            f"  - {meta['filename']} ({meta['duration_sec']:.1f}s, {meta['num_speakers']} speakers)"
+        )
 
 
 def main() -> None:
     """Main entry point."""
-    parser = argparse.ArgumentParser(
-        description="Generate synthetic audio samples for testing"
-    )
+    parser = argparse.ArgumentParser(description="Generate synthetic audio samples for testing")
     parser.add_argument(
         "--output-dir",
         type=Path,

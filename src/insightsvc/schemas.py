@@ -218,9 +218,7 @@ class Summary(BaseModel):
     summary: str = Field(description="Concise meeting summary")
     decisions: list[Decision] = Field(default_factory=list, description="Decisions made")
     action_items: list[ActionItem] = Field(default_factory=list, description="Action items")
-    disagreements: list[Disagreement] = Field(
-        default_factory=list, description="Disagreements"
-    )
+    disagreements: list[Disagreement] = Field(default_factory=list, description="Disagreements")
     risks: list[Risk] = Field(default_factory=list, description="Identified risks")
     open_questions: list[str] = Field(default_factory=list, description="Unresolved questions")
 
@@ -237,7 +235,9 @@ class Artifacts(BaseModel):
 class Metrics(BaseModel):
     """Analysis quality metrics."""
 
-    wer: float | None = Field(default=None, ge=0.0, description="Word error rate (if ref available)")
+    wer: float | None = Field(
+        default=None, ge=0.0, description="Word error rate (if ref available)"
+    )
     der: float | None = Field(default=None, ge=0.0, description="Diarization error rate")
     processing_time_sec: float = Field(ge=0.0, description="Total processing time")
     rtf: float = Field(ge=0.0, description="Real-time factor (processing / audio duration)")

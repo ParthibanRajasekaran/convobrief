@@ -4,9 +4,8 @@ Creates and configures the FastAPI application with middleware,
 error handlers, and lifecycle management.
 """
 
-import sys
+from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
-from typing import AsyncGenerator
 
 from fastapi import FastAPI, Request, status
 from fastapi.exceptions import RequestValidationError
@@ -80,8 +79,7 @@ def create_app() -> FastAPI:
     Returns:
         Configured FastAPI application.
     """
-    settings = get_settings()
-
+    # Settings loaded via lifespan context manager
     app = FastAPI(
         title="AI Conversation Insights Service",
         description="Production-ready speaker diarization, ASR, and mood analysis service",
@@ -113,9 +111,11 @@ def create_app() -> FastAPI:
         )
 
         return JSONResponse(
-            status_code=status.HTTP_400_BAD_REQUEST
-            if exc.code == ErrorCode.INVALID_INPUT
-            else status.HTTP_500_INTERNAL_SERVER_ERROR,
+            status_code=(
+                status.HTTP_400_BAD_REQUEST
+                if exc.code == ErrorCode.INVALID_INPUT
+                else status.HTTP_500_INTERNAL_SERVER_ERROR
+            ),
             content=ErrorResponse(
                 code=exc.code,
                 message=exc.message,

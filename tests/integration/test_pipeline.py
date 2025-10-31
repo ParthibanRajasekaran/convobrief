@@ -4,7 +4,6 @@ Tests the complete analysis workflow from audio input to final outputs.
 """
 
 import pytest
-from uuid import uuid4
 
 # TODO: Uncomment when pipeline is implemented
 # from insightsvc.pipelines.analyze_meeting import MeetingAnalysisPipeline
@@ -16,7 +15,7 @@ from uuid import uuid4
 async def test_end_to_end_analysis():
     """Test complete pipeline with sample audio."""
     # TODO: Create or load sample audio file
-    sample_audio_path = "tests/data/sample_2speakers.wav"
+    # sample_audio_path = "tests/data/sample_2speakers.wav"
 
     # Create request
     # request = AnalyzeRequest(

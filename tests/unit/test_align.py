@@ -1,7 +1,5 @@
 """Unit tests for speaker alignment."""
 
-import pytest
-
 from insightsvc.models.base import ASRWord, DiarizationSegment
 from insightsvc.services.align import assign_speakers, group_into_utterances
 

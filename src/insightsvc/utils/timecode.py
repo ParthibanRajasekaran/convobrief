@@ -5,7 +5,6 @@ and formatting for human-readable output.
 """
 
 from datetime import timedelta
-from typing import Tuple
 
 
 def seconds_to_timecode(seconds: float, include_ms: bool = True) -> str:
@@ -109,9 +108,7 @@ def format_duration(seconds: float) -> str:
     return " ".join(parts)
 
 
-def time_overlap(
-    start1: float, end1: float, start2: float, end2: float
-) -> Tuple[float, float]:
+def time_overlap(start1: float, end1: float, start2: float, end2: float) -> tuple[float, float]:
     """Calculate overlap between two time intervals.
 
     Args:
@@ -142,8 +139,8 @@ def time_overlap(
 
 
 def merge_overlapping_segments(
-    segments: list[Tuple[float, float]], min_gap: float = 0.0
-) -> list[Tuple[float, float]]:
+    segments: list[tuple[float, float]], min_gap: float = 0.0
+) -> list[tuple[float, float]]:
     """Merge overlapping or adjacent time segments.
 
     Args:
@@ -180,7 +177,7 @@ def merge_overlapping_segments(
 
 def split_into_chunks(
     duration: float, chunk_size: float, overlap: float = 0.0
-) -> list[Tuple[float, float]]:
+) -> list[tuple[float, float]]:
     """Split duration into overlapping chunks for processing.
 
     Args:

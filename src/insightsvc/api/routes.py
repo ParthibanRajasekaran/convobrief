@@ -6,7 +6,6 @@ Defines all HTTP endpoints for the service.
 import time
 import uuid
 from datetime import datetime
-from pathlib import Path
 from typing import Annotated
 
 from fastapi import APIRouter, File, Form, UploadFile, status
@@ -150,7 +149,9 @@ async def analyze_audio(
             job_id=job_id,
             models={
                 "asr": ModelInfo(name=settings.asr_model_name, version=None, config={}),
-                "diarization": ModelInfo(name="pyannote/speaker-diarization-3.1", version=None, config={}),
+                "diarization": ModelInfo(
+                    name="pyannote/speaker-diarization-3.1", version=None, config={}
+                ),
             },
             transcript=Transcript(
                 words=[],
@@ -203,7 +204,7 @@ async def analyze_audio(
             message=f"Analysis failed: {str(e)}",
             hint="Check logs for details",
             recoverable=False,
-        )
+        ) from e
     finally:
         requests_in_progress.dec()
 
