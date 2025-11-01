@@ -46,6 +46,16 @@ types-aiofiles = "^23.2.0"
 
 [tool.poetry.extras]
 s3 = ["boto3"]
+dashboard = ["streamlit", "plotly", "pandas"]
+
+[tool.poetry.group.dashboard]
+optional = true
+
+[tool.poetry.group.dashboard.dependencies]
+streamlit = "^1.28.0"
+plotly = "^5.18.0"
+pandas = "^2.1.0"
+requests = "^2.31.0"
 
 [build-system]
 requires = ["poetry-core"]

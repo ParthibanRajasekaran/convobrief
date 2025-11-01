@@ -1,4 +1,4 @@
-.PHONY: setup lint typecheck test check run clean docker help
+.PHONY: setup lint typecheck test check run dashboard clean docker help
 
 help:
 	@echo "Available commands:"
@@ -10,7 +10,8 @@ help:
 	@echo "  make test-unit   - Run unit tests only"
 	@echo "  make test-cov    - Run tests with coverage report"
 	@echo "  make check       - Run all checks (lint + typecheck + test)"
-	@echo "  make run         - Run development server"
+	@echo "  make run         - Run development server (FastAPI)"
+	@echo "  make dashboard   - Run Streamlit dashboard (requires backend running)"
 	@echo "  make clean       - Remove generated files"
 	@echo "  make docker      - Build Docker image"
 	@echo "  make docker-run  - Run Docker container"
@@ -45,6 +46,12 @@ check: lint typecheck test
 
 run:
 	poetry run uvicorn insightsvc.api.app:create_app --factory --reload --host 0.0.0.0 --port 8000
+
+dashboard:
+	@echo "Starting Streamlit dashboard..."
+	@echo "Make sure the backend is running on http://localhost:8000"
+	@echo "Dashboard will open at http://localhost:8501"
+	poetry run streamlit run dashboard.py
 
 clean:
 	find . -type d -name __pycache__ -exec rm -rf {} +

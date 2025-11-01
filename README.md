@@ -93,6 +93,31 @@ docker build -t insightsvc:latest .
 docker run -p 8000:8000 --gpus all -v $(pwd)/.env:/app/.env insightsvc:latest
 ```
 
+## Interactive Dashboard
+
+**NEW**: We now provide a beautiful Streamlit-based dashboard for easy visualization!
+
+```bash
+# Install dashboard dependencies
+poetry install --with dashboard
+
+# Start backend (Terminal 1)
+make run
+
+# Start dashboard (Terminal 2)
+poetry run streamlit run dashboard.py
+```
+
+Open `http://localhost:8501` in your browser and enjoy:
+- 📁 Drag-and-drop file upload
+- 📋 Interactive summary with decisions, action items, and risks
+- 💬 Timeline visualization of speaker diarization
+- 🎭 Mood analysis with valence/arousal charts
+- 📊 Quality metrics and performance stats
+- 💾 Export results as JSON or Markdown
+
+See [DASHBOARD.md](DASHBOARD.md) for detailed documentation.
+
 ## API Usage
 
 ### Analyze Meeting
