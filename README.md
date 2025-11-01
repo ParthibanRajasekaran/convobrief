@@ -60,7 +60,7 @@ HF_TOKEN=your_token_here
 DIARIZATION_BACKEND=pyannote  # or hybrid
 ASR_MODEL_NAME=openai/whisper-large-v3
 ASR_BEAM_SIZE=5
-ASR_TEMPERATURES=0.0,0.2,0.4
+ASR_TEMPERATURES=[0.0,0.2,0.4]
 
 EMOTION_MODEL_NAME=audeering/wav2vec2-large-robust-24-ft-emotion-msp-dim
 SENTIMENT_MODEL_NAME=cardiffnlp/twitter-roberta-base-sentiment-latest
@@ -70,7 +70,7 @@ SUMMARIZER_MODEL_NAME=mistralai/Mistral-7B-Instruct-v0.3
 # NLP Config
 EMOTION_WINDOW_SEC=10.0
 SARCASM_THRESHOLD=0.5
-FUSION_WEIGHTS=0.4,0.3,0.3  # audio_valence, text_sentiment, sarcasm
+FUSION_WEIGHTS=[0.4,0.3,0.3]  # audio_valence, text_sentiment, sarcasm
 
 # S3 (optional)
 # S3_BUCKET=my-bucket

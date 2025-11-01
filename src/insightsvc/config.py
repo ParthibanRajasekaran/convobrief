@@ -7,7 +7,7 @@ All settings can be overridden via .env file or environment variables.
 from pathlib import Path
 from typing import Literal
 
-from pydantic import Field, field_validator
+from pydantic import Field, field_validator, ValidationInfo
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -210,6 +210,14 @@ class Settings(BaseSettings):
         description="Hash audio URIs in logs",
     )
 
+    @field_validator("asr_temperatures", "fusion_weights", mode="before")
+    @classmethod
+    def parse_float_list(cls, v):
+        """Parse comma-separated string or list to list of floats."""
+        if isinstance(v, str):
+            return [float(x.strip()) for x in v.split(",")]
+        return v
+
     @field_validator("fusion_weights")
     @classmethod
     def validate_fusion_weights(cls, v: list[float]) -> list[float]:
@@ -223,7 +231,7 @@ class Settings(BaseSettings):
 
     @field_validator("max_speakers")
     @classmethod
-    def validate_speaker_range(cls, v: int, info: dict) -> int:
+    def validate_speaker_range(cls, v: int, info: ValidationInfo) -> int:
         """Ensure max_speakers >= min_speakers."""
         min_speakers = info.data.get("min_speakers", 2)
         if v < min_speakers:
