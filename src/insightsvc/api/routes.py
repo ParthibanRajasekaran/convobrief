@@ -105,7 +105,8 @@ async def analyze_audio(
             # Build request from form data
             from insightsvc.schemas import SummarizerConfig
 
-            req = AnalyzeRequest(
+            # Use model_construct to bypass validation for local file paths
+            req = AnalyzeRequest.model_construct(
                 audio_uri=audio_uri,
                 expected_speakers=expected_speakers,
                 language_hint=language_hint,

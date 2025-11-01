@@ -9,7 +9,7 @@ from enum import Enum
 from typing import Any
 from uuid import UUID
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, field_validator, ValidationInfo
 
 
 class SummarizerConfig(BaseModel):
@@ -73,9 +73,10 @@ class AnalyzeRequest(BaseModel):
         """Validate audio URI format."""
         if v is None:
             return v
-        if not (v.startswith("s3://") or v.startswith("http://") or v.startswith("https://")):
-            raise ValueError("audio_uri must start with s3://, http://, or https://")
-        return v
+        # Allow local file paths (for uploaded files) or remote URIs
+        if v.startswith(("s3://", "http://", "https://", "/", ".", "artifacts/")):
+            return v
+        raise ValueError("audio_uri must be a valid file path or URI (s3://, http://, https://)")
 
 
 class ModelInfo(BaseModel):
@@ -98,7 +99,7 @@ class Word(BaseModel):
 
     @field_validator("end")
     @classmethod
-    def validate_end_time(cls, v: float, info: dict) -> float:
+    def validate_end_time(cls, v: float, info: ValidationInfo) -> float:
         """Ensure end >= start."""
         start = info.data.get("start", 0.0)
         if v < start:
