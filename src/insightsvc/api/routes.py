@@ -3,12 +3,13 @@
 Defines all HTTP endpoints for the service.
 """
 
+import json
 import time
 import uuid
 from datetime import datetime
 from typing import Annotated
 
-from fastapi import APIRouter, File, Form, UploadFile, status
+from fastapi import APIRouter, File, Form, HTTPException, UploadFile, status
 from fastapi.responses import FileResponse
 
 from insightsvc import __version__
@@ -51,7 +52,7 @@ async def health_check() -> HealthResponse:
     tags=["Analysis"],
 )
 async def analyze_audio(
-    request: AnalyzeRequest | None = None,
+    request: Annotated[str | None, Form()] = None,
     file: UploadFile | None = File(default=None),
     expected_speakers: Annotated[int | None, Form()] = None,
     language_hint: Annotated[str | None, Form()] = None,
@@ -63,7 +64,7 @@ async def analyze_audio(
     Supports both JSON request with audio_uri and multipart file upload.
 
     Args:
-        request: JSON request body (for audio_uri).
+        request: JSON string containing AnalyzeRequest data (for audio_uri and advanced options).
         file: Uploaded audio file.
         expected_speakers: Expected number of speakers.
         language_hint: Language hint (ISO 639-1).
@@ -74,6 +75,7 @@ async def analyze_audio(
         Complete analysis result with transcript, summary, and mood.
 
     Raises:
+        HTTPException: If request JSON is invalid.
         AnalysisError: If analysis fails.
     """
     settings = get_settings()
@@ -86,6 +88,23 @@ async def analyze_audio(
     start_time = time.time()
 
     try:
+        # Parse request JSON string if provided
+        parsed_request: AnalyzeRequest | None = None
+        if request:
+            try:
+                request_data = json.loads(request)
+                parsed_request = AnalyzeRequest(**request_data)
+            except json.JSONDecodeError as e:
+                raise HTTPException(
+                    status_code=400,
+                    detail=f"Invalid JSON in 'request' field: {str(e)}",
+                ) from e
+            except Exception as e:
+                raise HTTPException(
+                    status_code=400,
+                    detail=f"Invalid request data: {str(e)}",
+                ) from e
+
         # Handle both JSON and form upload
         if file is not None:
             # File upload
@@ -105,18 +124,39 @@ async def analyze_audio(
             # Build request from form data
             from insightsvc.schemas import SummarizerConfig
 
-            # Use model_construct to bypass validation for local file paths
-            req = AnalyzeRequest.model_construct(
-                audio_uri=audio_uri,
-                expected_speakers=expected_speakers,
-                language_hint=language_hint,
-                enable_overlaps=enable_overlaps,
-                return_word_confidence=return_word_confidence,
-                summarizer=SummarizerConfig(),
-                sarcasm_sensitivity="balanced",
-            )
-        elif request is not None:
-            req = request
+            # Merge parsed_request data with form parameters if provided
+            if parsed_request:
+                # Use values from parsed_request but allow form fields to override
+                req = AnalyzeRequest.model_construct(
+                    audio_uri=audio_uri,
+                    expected_speakers=expected_speakers or parsed_request.expected_speakers,
+                    language_hint=language_hint or parsed_request.language_hint,
+                    enable_overlaps=(
+                        enable_overlaps
+                        if enable_overlaps is not None
+                        else parsed_request.enable_overlaps
+                    ),
+                    return_word_confidence=(
+                        return_word_confidence
+                        if return_word_confidence is not None
+                        else parsed_request.return_word_confidence
+                    ),
+                    summarizer=parsed_request.summarizer,
+                    sarcasm_sensitivity=parsed_request.sarcasm_sensitivity,
+                )
+            else:
+                # Use model_construct to bypass validation for local file paths
+                req = AnalyzeRequest.model_construct(
+                    audio_uri=audio_uri,
+                    expected_speakers=expected_speakers,
+                    language_hint=language_hint,
+                    enable_overlaps=enable_overlaps,
+                    return_word_confidence=return_word_confidence,
+                    summarizer=SummarizerConfig(),
+                    sarcasm_sensitivity="balanced",
+                )
+        elif parsed_request is not None:
+            req = parsed_request
             audio_uri = req.audio_uri
         else:
             raise AnalysisError(
