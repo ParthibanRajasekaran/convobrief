@@ -7,7 +7,7 @@ All settings can be overridden via .env file or environment variables.
 from pathlib import Path
 from typing import Literal
 
-from pydantic import Field, field_validator, ValidationInfo
+from pydantic import Field, ValidationInfo, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
