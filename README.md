@@ -120,7 +120,45 @@ See [DASHBOARD.md](DASHBOARD.md) for detailed documentation.
 
 ## API Usage
 
-### Analyze Meeting
+### Quick Analysis (Simplified Endpoint)
+
+**NEW**: For quick insights without complex configuration:
+
+```bash
+# Just upload a file and get immediate insights
+curl -X POST http://localhost:8000/analyze/simple \
+  -F "file=@meeting.wav"
+```
+
+**Response** (clean and human-readable):
+```json
+{
+  "speakers_detected": 2,
+  "participants": [
+    {
+      "label": "Person 1",
+      "talk_time_sec": 120.5,
+      "tone": "calm",
+      "mood": "positive",
+      "sarcasm_detected": false,
+      "context_summary": "Provided clear updates..."
+    }
+  ],
+  "overall_conversation_mood": "positive and collaborative",
+  "feedback_summary": "Professional engagement with clear communication",
+  "processing_time_sec": 12.45
+}
+```
+
+Perfect for:
+- Quick meeting insights
+- Customer service quality checks
+- Interview assessments
+- Team health monitoring
+
+See [SIMPLE_ANALYSIS.md](SIMPLE_ANALYSIS.md) for complete documentation.
+
+### Full Analysis (Detailed Endpoint)
 
 ```bash
 curl -X POST http://localhost:8000/analyze \

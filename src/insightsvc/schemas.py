@@ -284,3 +284,41 @@ class ErrorResponse(BaseModel):
     hint: str | None = Field(default=None, description="Suggestion for resolution")
     recoverable: bool = Field(default=False, description="Whether error is recoverable")
     job_id: UUID | None = Field(default=None, description="Job ID if available")
+
+
+# Simplified Analysis Schemas
+
+
+class ParticipantMood(BaseModel):
+    """Simplified mood and tone analysis for a single participant."""
+
+    label: str = Field(description="Participant identifier (e.g., 'Person 1', 'Speaker A')")
+    talk_time_sec: float = Field(ge=0.0, description="Total speaking time in seconds")
+    tone: str = Field(
+        description="Overall tone (e.g., 'calm', 'assertive', 'anxious', 'enthusiastic')"
+    )
+    mood: str = Field(description="Overall mood (e.g., 'positive', 'neutral', 'negative', 'mixed')")
+    sarcasm_detected: bool = Field(description="Whether sarcasm was detected in speech")
+    context_summary: str = Field(
+        description="Brief summary of participant's contributions and communication style"
+    )
+
+
+class SimpleAnalysisResponse(BaseModel):
+    """Simplified analysis response with essential insights.
+
+    Provides an easy-to-read summary of conversation dynamics without
+    complex nested structures or artifacts.
+    """
+
+    speakers_detected: int = Field(ge=1, description="Number of speakers detected in audio")
+    participants: list[ParticipantMood] = Field(
+        description="Mood and tone analysis for each participant"
+    )
+    overall_conversation_mood: str = Field(
+        description="Overall conversational sentiment and atmosphere"
+    )
+    feedback_summary: str = Field(
+        description="High-level assessment of conversation dynamics and engagement"
+    )
+    processing_time_sec: float = Field(ge=0.0, description="Total processing time in seconds")

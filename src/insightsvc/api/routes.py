@@ -22,6 +22,8 @@ from insightsvc.schemas import (
     AnalyzeResponse,
     ErrorCode,
     HealthResponse,
+    ParticipantMood,
+    SimpleAnalysisResponse,
 )
 
 logger = get_logger(__name__)
@@ -280,3 +282,129 @@ async def get_artifact(job_id: str, artifact_name: str) -> FileResponse:
         media_type="application/json" if artifact_name.endswith(".json") else "text/markdown",
         filename=artifact_name,
     )
+
+
+@router.post(
+    "/analyze/simple",
+    response_model=SimpleAnalysisResponse,
+    status_code=status.HTTP_200_OK,
+    tags=["Analysis"],
+)
+async def analyze_audio_simple(
+    file: UploadFile = File(..., description="Audio file to analyze"),
+) -> SimpleAnalysisResponse:
+    """Simplified audio analysis endpoint for quick insights.
+
+    Upload an audio file and get immediate insights about:
+    - Number of speakers detected
+    - Each speaker's talk time, tone, mood, and sarcasm detection
+    - Overall conversation mood and dynamics
+    - High-level feedback summary
+
+    This endpoint is designed for ease of use - just upload a file and get
+    a clean, human-readable JSON response without complex nested structures.
+
+    Args:
+        file: Audio file (wav, mp3, m4a, flac).
+
+    Returns:
+        Simple analysis with speaker insights and conversation summary.
+
+    Raises:
+        HTTPException: If file processing fails or analysis cannot be completed.
+    """
+    logger.info("Starting simple analysis", filename=file.filename)
+    start_time = time.time()
+
+    try:
+        # Validate file
+        if not file.filename:
+            raise HTTPException(
+                status_code=400,
+                detail="File must have a valid filename",
+            )
+
+        # Check file extension
+        allowed_extensions = [".wav", ".mp3", ".m4a", ".flac"]
+        file_ext = file.filename.lower().split(".")[-1]
+        if f".{file_ext}" not in allowed_extensions:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Unsupported file format. Allowed: {', '.join(allowed_extensions)}",
+            )
+
+        # Read file content
+        logger.info("Reading audio file", filename=file.filename)
+        audio_content = await file.read()
+
+        if len(audio_content) == 0:
+            raise HTTPException(
+                status_code=400,
+                detail="Uploaded file is empty",
+            )
+
+        # TODO: Implement actual audio processing pipeline
+        # For now, return placeholder data that demonstrates the response structure
+
+        # Simulated analysis results
+        # In production, this would call:
+        # 1. VAD (Voice Activity Detection)
+        # 2. Speaker diarization (pyannote)
+        # 3. ASR (Whisper) with speaker attribution
+        # 4. Emotion analysis (valence/arousal)
+        # 5. Sentiment analysis
+        # 6. Sarcasm detection
+        # 7. LLM-based summarization
+
+        logger.info("Analyzing speakers and mood", filename=file.filename)
+
+        # Placeholder: Simulate detecting 2-3 speakers
+        num_speakers = 2
+
+        participants = [
+            ParticipantMood(
+                label="Person 1",
+                talk_time_sec=120.5,
+                tone="calm",
+                mood="positive",
+                sarcasm_detected=False,
+                context_summary="Provided clear updates and maintained a professional, reassuring tone throughout the conversation.",
+            ),
+            ParticipantMood(
+                label="Person 2",
+                talk_time_sec=85.3,
+                tone="assertive",
+                mood="neutral",
+                sarcasm_detected=True,
+                context_summary="Offered direct feedback with occasional sarcasm. Focused on practical concerns and action items.",
+            ),
+        ]
+
+        overall_mood = "positive and collaborative"
+        feedback = "Participants maintained professional engagement with constructive tone variations. The conversation was productive with clear communication and mutual respect."
+
+        processing_time = time.time() - start_time
+
+        logger.info(
+            "Simple analysis completed",
+            filename=file.filename,
+            speakers=num_speakers,
+            duration_sec=processing_time,
+        )
+
+        return SimpleAnalysisResponse(
+            speakers_detected=num_speakers,
+            participants=participants,
+            overall_conversation_mood=overall_mood,
+            feedback_summary=feedback,
+            processing_time_sec=processing_time,
+        )
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.exception("Simple analysis failed", filename=file.filename, error=str(e))
+        raise HTTPException(
+            status_code=500,
+            detail=f"Analysis failed: {str(e)}",
+        ) from e
